@@ -1,10 +1,10 @@
 ﻿
+using MediatR;
+using SurtechChallenge.Domain.Entities;
 
-namespace SurtechChallenge.Application.Features.Objects.Queries
+namespace SurtechChallenge.Application.Features.Objects.Queries;
+
+public class GetAllObjectsQuery : IRequest<IEnumerable<ApiObject>>
 {
-    using MediatR;
-    using SurtechChallenge.Domain.Entities;
-    public class GetAllObjectsQuery : IRequest<IEnumerable<ApiObject>>
-    {
-    }
 }
+

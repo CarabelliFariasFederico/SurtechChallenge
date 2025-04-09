@@ -10,38 +10,35 @@ using SurtechChallenge.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ─────────────────────────────────────────────
-// 🚀 1. Add Controllers and FluentValidation
-// ─────────────────────────────────────────────
-builder.Services.AddControllers(); // No usamos .AddFluentValidation() porque es obsoleto
+
+builder.Services.AddControllers();
+
+//  Registrar validadores con FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<CreateObjectCommandValidator>();
 
-// ─────────────────────────────────────────────
-// 🔧 2. Swagger / OpenAPI
-// ─────────────────────────────────────────────
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//  Registrar AutoMapper con perfiles de mapeo
+builder.Services.AddAutoMapper(typeof(ObjectProfile).Assembly);
 
-// ─────────────────────────────────────────────
-// 🔌 3. Dependency Injection - Application Services
-// ─────────────────────────────────────────────
+//  Registrar servicios HTTP (RESTful API + RandomUser API)
 builder.Services.AddHttpClient<IRestfulApiService, RestfulApiService>();
 builder.Services.AddHttpClient<IRandomUserService, RandomUserService>();
 
-
+// 📌 Registrar MediatR para CQRS
 builder.Services.AddMediatR(typeof(GetAllObjectsQueryHandler).Assembly);
 
-// 📌 3.1 Pipeline behavior to validate commands/queries automatically
+//  Pipeline de validación (Behavior que intercepta y lanza errores si hay fallos)
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-builder.Services.AddAutoMapper(typeof(ObjectProfile).Assembly);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
-// ─────────────────────────────────────────────
-// 🌐 4. Middleware configuration
-// ─────────────────────────────────────────────
+//  Middleware global de manejo de excepciones (validaciones y errores 500)
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -49,8 +46,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
 
 app.Run();

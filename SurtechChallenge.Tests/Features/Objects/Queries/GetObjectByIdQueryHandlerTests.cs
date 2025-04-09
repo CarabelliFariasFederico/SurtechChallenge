@@ -11,7 +11,6 @@ public class GetObjectByIdQueryHandlerTests
     [Fact]
     public async Task Handle_Should_Return_Object_When_Found()
     {
-        // Arrange
         var expected = new ApiObject
         {
             Id = "abc123",
@@ -25,10 +24,8 @@ public class GetObjectByIdQueryHandlerTests
 
         var handler = new GetObjectByIdQueryHandler(mockService.Object);
 
-        // Act
         var result = await handler.Handle(new GetObjectByIdQuery { Id = "abc123" }, CancellationToken.None);
 
-        // Assert
         result.Should().NotBeNull();
         result!.Id.Should().Be("abc123");
     }
@@ -36,16 +33,13 @@ public class GetObjectByIdQueryHandlerTests
     [Fact]
     public async Task Handle_Should_Return_Null_When_Not_Found()
     {
-        // Arrange
         var mockService = new Mock<IRestfulApiService>();
         mockService.Setup(s => s.GetByIdAsync("xyz")).ReturnsAsync((ApiObject?)null);
 
         var handler = new GetObjectByIdQueryHandler(mockService.Object);
 
-        // Act
         var result = await handler.Handle(new GetObjectByIdQuery { Id = "xyz" }, CancellationToken.None);
 
-        // Assert
         result.Should().BeNull();
     }
 }

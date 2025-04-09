@@ -12,7 +12,6 @@ public class CreateObjectCommandHandlerTests
     [Fact]
     public async Task Handle_Should_Call_CreateAsync_And_Return_Result()
     {
-        // Arrange
         var command = new CreateObjectCommand
         {
             Name = "Test Object",
@@ -40,10 +39,8 @@ public class CreateObjectCommandHandlerTests
 
         var handler = new CreateObjectCommandHandler(mockService.Object, mockMapper.Object);
 
-        // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
-        // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be("123");
         result.Name.Should().Be("Test Object");

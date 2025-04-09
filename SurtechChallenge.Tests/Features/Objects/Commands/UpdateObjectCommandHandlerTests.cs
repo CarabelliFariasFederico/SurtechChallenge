@@ -12,7 +12,6 @@ public class UpdateObjectCommandHandlerTests
     [Fact]
     public async Task Handle_Should_Update_And_Return_Object()
     {
-        // Arrange
         var command = new UpdateObjectCommand
         {
             Id = "id123",
@@ -35,10 +34,8 @@ public class UpdateObjectCommandHandlerTests
 
         var handler = new UpdateObjectCommandHandler(mockService.Object, mockMapper.Object);
 
-        // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
-        // Assert
         result.Should().NotBeNull();
         result!.Id.Should().Be("id123");
         result!.Name.Should().Be("Updated Name");
@@ -48,7 +45,6 @@ public class UpdateObjectCommandHandlerTests
     [Fact]
     public async Task Handle_Should_Return_Null_When_Api_Returns_Null()
     {
-        // Arrange
         var command = new UpdateObjectCommand { Id = "id456", Name = "Fail", Data = new() };
 
         var mockMapper = new Mock<IMapper>();
@@ -60,10 +56,8 @@ public class UpdateObjectCommandHandlerTests
 
         var handler = new UpdateObjectCommandHandler(mockService.Object, mockMapper.Object);
 
-        // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
-        // Assert
         result.Should().BeNull();
     }
 }

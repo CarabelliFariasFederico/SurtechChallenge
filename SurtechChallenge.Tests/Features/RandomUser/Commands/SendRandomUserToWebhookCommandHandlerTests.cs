@@ -11,7 +11,6 @@ public class SendRandomUserToWebhookCommandHandlerTests
     [Fact]
     public async Task Handle_Should_Send_RandomUser_To_Webhook_And_Return_True()
     {
-        // Arrange
         var payload = new RandomUserWebhookPayload
         {
             Name = new Name { Title = "Mr", First = "John", Last = "Doe" },
@@ -30,10 +29,8 @@ public class SendRandomUserToWebhookCommandHandlerTests
             WebhookId = "123"
         };
 
-        // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
-        // Assert
         result.Should().BeTrue();
         mockService.Verify(s => s.GetAndMapRandomUserAsync(), Times.Once);
         mockService.Verify(s => s.SendToWebhookAsync(payload, "123"), Times.Once);
@@ -42,7 +39,6 @@ public class SendRandomUserToWebhookCommandHandlerTests
     [Fact]
     public async Task Handle_Should_Return_False_When_Payload_Is_Null()
     {
-        // Arrange
         var mockService = new Mock<IRandomUserService>();
         mockService.Setup(s => s.GetAndMapRandomUserAsync())
                    .ReturnsAsync((RandomUserWebhookPayload?)null);
@@ -50,10 +46,8 @@ public class SendRandomUserToWebhookCommandHandlerTests
         var handler = new SendRandomUserToWebhookCommandHandler(mockService.Object);
         var command = new SendRandomUserToWebhookCommand { WebhookId = "123" };
 
-        // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
-        // Assert
         result.Should().BeFalse();
         mockService.Verify(s => s.SendToWebhookAsync(It.IsAny<RandomUserWebhookPayload>(), It.IsAny<string>()), Times.Never);
     }
