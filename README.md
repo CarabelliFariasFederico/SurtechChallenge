@@ -52,8 +52,8 @@ SurtechChallenge.Tests → Pruebas unitarias con xUnit, Moq y FluentAssertions
 |--------|------------------------------|----------------------------------------|
 | GET    | `/api/objects`               | Obtener todos los objetos              |
 | GET    | `/api/objects/{id}`          | Obtener objeto por ID                  |
-| POST   | `/api/objects`               | Crear nuevo objeto (validado)          |
-| PUT    | `/api/objects/{id}`          | Actualizar objeto completo (validado)  |
+| POST   | `/api/objects`               | Crear nuevo objeto                     |
+| PUT    | `/api/objects/{id}`          | Actualizar objeto completo             |
 
 ### 🎲 `/api/randomuser`
 
